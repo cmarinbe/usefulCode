@@ -1,3 +1,10 @@
+##############################
+# @file ApplyCuts.py
+# @date 2015-06-05
+# @author Carla Marin
+# @email cmarin@ecm.ub.edu
+##############################
+
 import ROOT
 from ROOT import TFile, TTree
 
