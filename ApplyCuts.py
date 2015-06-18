@@ -1,33 +1,48 @@
-##############################
-# @file ApplyCuts.py
-# @date 2015-06-05
-# @author Carla Marin
-# @email cmarin@ecm.ub.edu
-##############################
+#!/usr/bin/env python
+# =============================================================================
+# @file   ApplyCuts.py
+# @author C. Marin Benito (carla.marin.benito@cern.ch)
+# @date   18.06.2015
+# =============================================================================
+"""Script to copy a tuple with cuts"""
 
+# imports
+import argparse
 import ROOT
 from ROOT import TFile, TTree
 
-fileName = "/u/mrsrv/cmarin/KsTo4l/tuples/24032014_MCKs2pipiee_looseSel_DOCA/Ks2pipiee.root"
-treeName = "Ks2e2piTuple/DecayTree"
+# definition of functions for this script
+def applyCuts(fileName, treeName, cuts, newName="_seletion"):
+    file = TFile(fileName)
+    tree = file.Get(treeName)
+    entries = tree.GetEntries()
+    
+    newFileName = fileName.replace(".root", "%s.root" %newName)
+    newFile = TFile(newFileName, "recreate")
+    
+    cutTree = tree.CopyTree(cuts)
+    
+    passEntries = float(cutTree.GetEntries())
+    eff = passEntries/entries
 
-file = TFile(fileName)
-tree = file.Get(treeName)
-entries = tree.GetEntries()
+    print "%s candidates in the initial tuple" % entries
+    print "%s candidates pass the selection" % passEntries
+    print "The efficiency of the selection is %s" % eff
 
-trackSelection = "piplus_IPCHI2_OWNPV > 50 && piplus_TRACK_GhostProb < 0.3 && piminus_IPCHI2_OWNPV > 50 && piminus_TRACK_GhostProb < 0.3 && eplus_IPCHI2_OWNPV > 50 && eplus_TRACK_GhostProb < 0.3 && eminus_IPCHI2_OWNPV > 50 && eminus_TRACK_GhostProb < 0.3"
+    return newFileName
 
-pidSelection = "piplus_PIDK < 5 && piminus_PIDK < 5 && eplus_PIDe > -4 && eminus_PIDe > -4"
 
-KsSelection = "KS0_MAXDOCA < 0.3 && KS0_TAU > 0.0008953 && KS0_IP_OWNPV < 1 && KS0_MM < 800"
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-f", "--file", default=""          , action="store", type=str, help="file name"       )
+    parser.add_argument("-t", "--tree", default=""          , action="store", type=str, help="tree name"       )
+    parser.add_argument("-c", "--cuts", default=""          , action="store", type=str, help="cuts to apply"   )
+    parser.add_argument("-n", "--name", default="_seletion" , action="store",           help="name of new file")
+    args = parser.parse_args()
+    fileName = args.file
+    treeName = args.tree
+    cuts     = args.cuts
+    newFName = args.name
+    newFileName = applyCuts(fileName, treeName, cuts, newFName)
 
-selection = trackSelection+"&&"+pidSelection+"&&"+KsSelection
-
-cutTree = tree.CopyTree(selection)
-passEntries = float(cutTree.GetEntries())
-genEvents = 500000
-eff = passEntries/genEvents
-
-print "%s events were generated" % genEvents
-print "%s candidates pass the selection" % passEntries
-print "The efficiency of the selection over generated events is %s" % eff
+#EOF
