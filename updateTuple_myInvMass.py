@@ -6,6 +6,8 @@
 # =============================================================================
 """Add invariant mass of 2 electrons to a tuple"""
 
+import argparse
+
 from ROOT import TFile
 from array import array
 
