@@ -46,8 +46,8 @@ def addMyInvMass(fileName, treeName):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("-f", "--file" , default="" , action="store", type=str)
-    parser.add_argument("-t", "--tree" , default="" , action="store", type=str)
+    parser.add_argument("-f", "--file" , default="" , action="store", type=str, help="file to be updated")
+    parser.add_argument("-t", "--tree" , default="" , action="store", type=str, help="tree in file to be updated")
     args = parser.parse_args()
     fileName  = args.file
     treeName  = args.tree
