@@ -21,8 +21,10 @@ def applyCuts(fileName, treeName, cuts, newName="_seletion"):
     newFile = TFile(newFileName, "recreate")
     
     cutTree = tree.CopyTree(cuts)
-    
     passEntries = float(cutTree.GetEntries())
+    cutTree.Write()
+    newFile.Close()
+    
     eff = passEntries/entries
 
     print "%s candidates in the initial tuple" % entries
