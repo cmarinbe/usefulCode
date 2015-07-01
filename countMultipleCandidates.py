@@ -5,7 +5,7 @@
 # @date   01.07.2015
 #=============================================================================
 """Script to save the content off all .root files in a folder as .png"""
-
+from argparse import ArgumentParser
 import ROOT
 from ROOT import TFile
 
@@ -45,7 +45,7 @@ def countMultCandidates(tree, fileName="multCand.txt"):
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
+    parser = ArgumentParser()
     parser.add_argument("file" , action = "store", type = str, help="root file")
     parser.add_argument("-t", "--tree"   , default = "DecayTree"   , action = "store", type = str, help="tree name in the root file")
     parser.add_argument("-o", "--outFile", default = "multCand.txt", action = "store", type = str, help="name for the results file")
