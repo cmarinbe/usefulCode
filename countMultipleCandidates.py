@@ -17,11 +17,9 @@ def countMultCandidates(tree, fileName="multCand.txt"):
     """
     results = {}
     entries = tree.GetEntries()
-    print entries
     i = 0
     # loop over all events in the tree
     while i < entries:
-        print "Running on entry %s" %i
         tree.GetEntry(i)
         n = 1
         runNum = tree.runNumber
@@ -37,11 +35,15 @@ def countMultCandidates(tree, fileName="multCand.txt"):
     n_cand_list = results.keys()
     n_cand_list.sort()
     with open(fileName, 'w') as output:
+        output.write( "Total number of candidates is: %10s\n\n" %entries )
+        output.write( "%20s %20s %20s %20s \n"
+                     %("# mult cand per event", "# events", "total # candidates", "Proportion") )
         for n_cand_perEvent in n_cand_list:
             n_evts = results[n_cand_perEvent]
             n_cand_sameMult = n_cand_perEvent*n_evts
-            output.write( "Events with %s candidates: %10s (%s candidates)\n"
-                         %(n_cand_perEvent, n_evts, n_cand_sameMult) )
+            n_cand_sameMult_rate = 100*float(n_cand_sameMult)/entries
+            output.write( "%20s %20s %20s %20s \n"
+                         %(n_cand_perEvent, n_evts, n_cand_sameMult, n_cand_sameMult_rate) )
     return results
 
 
