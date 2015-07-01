@@ -27,24 +27,30 @@ def applyCuts(fileName, treeName, cuts, newName="_seletion"):
     
     eff = passEntries/entries
 
-    print "%s candidates in the initial tuple" % entries
-    print "%s candidates pass the selection" % passEntries
+    print "%s candidates in the initial tuple"    % entries
+    print "%s candidates pass the selection"      % passEntries
     print "The efficiency of the selection is %s" % eff
 
-    return newFileName
+    textFile = "selection%s.txt" %newName
+    with open(textFile, 'w') as output:
+        output.write("Selection: \n %s\n" %cuts)
+        output.write("File:      \n %s\n" %fileName)
+        output.write("Efficiency:\n %s\n" %eff)
+    
+    return newFileName, eff
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("-f", "--file", default=""          , action="store", type=str, help="file name"       )
-    parser.add_argument("-t", "--tree", default=""          , action="store", type=str, help="tree name"       )
-    parser.add_argument("-c", "--cuts", default=""          , action="store", type=str, help="cuts to apply"   )
-    parser.add_argument("-n", "--name", default="_seletion" , action="store",           help="name of new file")
+    parser.add_argument("file", action="store", type=str, help="file name"       )
+    parser.add_argument("cuts", action="store", type=str, help="cuts to apply"   )
+    parser.add_argument("-t", "--tree", default="DecayTree" , action="store", type=str, help="tree name (def: DecayTree)"          )
+    parser.add_argument("-n", "--name", default="_selection", action="store", type=str, help="sufix for new file (def: _selection)")
     args = parser.parse_args()
     fileName = args.file
     treeName = args.tree
     cuts     = args.cuts
     newFName = args.name
-    newFileName = applyCuts(fileName, treeName, cuts, newFName)
-
+    newFileName, eff = applyCuts(fileName, treeName, cuts, newFName)
+    
 #EOF
