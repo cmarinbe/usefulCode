@@ -22,8 +22,8 @@ def countMultCandidates(tree, fileName="multCand.txt"):
     while i < range(entries):
         tree.GetEntry(i)
         n = 1
-        runNum   = t.runNumber
-        eventNum = t.eventNumber
+        runNum   = tree.runNumber
+        eventNum = tree.eventNumber
         for j in range(entries-i-1):
             tree.GetEntry(i+j+1)
             if (runNum == tree.runNumber and evtNum == tree.eventNumber): n = n+1
