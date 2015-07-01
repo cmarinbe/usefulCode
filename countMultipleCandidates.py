@@ -56,6 +56,6 @@ if __name__ == '__main__':
     # read file and tree
     f = ROOT.TFile(fileName)
     t = f.Get(treeName)
-    results = countMultCandidates(tree, outName)
+    results = countMultCandidates(t, outName)
 
 n=0
