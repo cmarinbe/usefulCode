@@ -31,7 +31,7 @@ if __name__ == '__main__':
     n   = t.GetEntries("%s==%s" %(branch, value))
     eff = float(n)/entries*100
 
-    print "%20s %20s %20s" %("Total entries", "Entries with %s == %s" %(branch, value), "Proportion")
-    print "%20s %20s %20s" %(entries, n, eff)
+    print "%20s %40s %20s" %("Total entries", "Entries with %s == %s" %(branch, value), "Proportion (%%)")
+    print "%20s %40s %20s" %(entries, n, eff)
     
 # EOF
