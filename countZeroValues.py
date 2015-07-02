@@ -25,7 +25,7 @@ if __name__ == '__main__':
     value    = args.value
 
     f = ROOT.TFile(fileName)
-    t = file.Get(treeName)
+    t = f.Get(treeName)
     entries = t.GetEntries()
 
     n   = t.GetEntries("%s==%s" %(branch, value))
