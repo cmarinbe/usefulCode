@@ -33,6 +33,6 @@ if __name__ == '__main__':
 
     print "Total entries: %25s" %entries
     print "Entries with %s value == %20s: %5s" %(branch, value, n)
-    print "Proportion is: %25s %" %eff
+    print "Proportion is: %25s %%" %eff
     
 # EOF
