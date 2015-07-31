@@ -11,11 +11,7 @@ import os
 from argparse import ArgumentParser
 
 import ROOT
-
 from functions_Dataset import read_trees
-from config import labels, fileNames, treeNames
-from config import variables_toPlot as variables
-
 
 def fill_histos(labels, trees, variables, cuts="", bins=50):
     from ROOT import TH1F
@@ -109,24 +105,32 @@ def plot_vars(path_plots, variables, histos, optName="", leg=None, scale=True, c
 if __name__=="__main__":
     parser = ArgumentParser()
     parser.add_argument('tuplepath', action='store', type=str, help='Path for ntuples')
+    parser.add_argument('fileslist', action='store', type=str, help='List with the files to be drawn')
+    parser.add_argument('labellist', action='store', type=sts, help='List with the label of each file to be written int he plots')
+    parser.add_argument('varslist' , action='store', type=str, help='List with the variables to be drawn')
     parser.add_argument('plotspath', action='store', type=str, help='Path for plots')
-    parser.add_argument('--scale', default ='True', action='store', type=str, help='Normalize or not')
-    parser.add_argument('--cuts', default = '', action='store', type=str, help='Cuts to be applied')
+    parser.add_argument('--tNames', default = ''   , action='store', type=str, help='List with the names of the trees in the files')
+    parser.add_argument('--scale' , default ='True', action='store', type=str, help='Normalize or not')
+    parser.add_argument('--cuts'  , default = ''   , action='store', type=str, help='Cuts to be applied')
     args = parser.parse_args()
     # Build paths
     path_base  = os.path.abspath(args.tuplepath)
+    file_names = (args.fileslist).split(",")
+    labels     = (args.labellist).split(",")
+    list_vars  = (args.varslist).split(",")
     path_plots = os.path.abspath(args.plotspath)
+    tree_names = args.tNames if tNames!="" else ["DecayTree" for fN in file_names]
     scale = True if args.scale=='True' else False
-    cuts = args.cuts
+    cuts  = args.cuts
     if not os.path.isdir(path_base):
         raise OSError("Cannot find tuple path -> %s" % path_base)
     if not os.path.isdir(path_plots):
         os.mkdir(path_plots)
 
     # Define files
-    fileNames = [os.path.join(path_base, fN) for fN in fileNames]
+    file_names = [os.path.join(path_base, fN) for fN in file_names]
     # open files
-    files, trees = read_trees(fileNames, treeNames)
+    files, trees = read_trees(file_names, tree_names)
     # fill histos
     histos = fill_histos(labels, trees, variables, cuts)
     # create legend
